@@ -1,8 +1,15 @@
+'use strict';
+
 var express = require('express');
+var BooksService = require("./services/booksService")
 var app = express();
 
 app.get('/', function (req, res) {
-    res.send('Hello World!');
+
+    var booksService = new BooksService();
+    var book = booksService.getByTitle('testTitle');
+
+    res.send('Book title: ' + book);
 });
 
 app.listen(3000, function () {

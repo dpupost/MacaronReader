@@ -1,25 +1,23 @@
 'use strict';
 
-var MongoClient = require('mongodb').MongoClient,
-    assert = require('assert');
+var MongoClient = require('thunkify-mongodb').MongoClient;
+var mongodb = require('mongodb');
+var assert = require('assert');
 
 class BooksService{
 
     constructor(){
     }
 
-    getByTitle(title){
+    *getByTitle(title){
+        var mongoClient = new MongoClient(new mongodb.MongoClient());
+        var db = yield mongoClient.connect('mongodb://localhost:27017/MacaronReader');
+        var collection = yield db.collection('books');
+        var book = yield collection.find({title: title}).toArray();
 
-        MongoClient.connect('mongodb://localhost:27017/MacaronReader', function(err, db) {
-            assert.equal(null, err);
+        yield db.close();
 
-            db.collection('books', function (err, collection) {
-
-                collection.find({title: title}).toArray(function (err, item) {
-                    return item;
-                });
-            });
-        });
+        return book;
     }
 
     getById(id){

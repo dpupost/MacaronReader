@@ -9,7 +9,7 @@ app.get('/', function (req, res) {
     var booksService = new BooksService();
     var book = booksService.getByTitle('testTitle');
 
-    res.send('Book title: ' + book);
+    res.send('Book title: ' + book.next().value);
 });
 
 app.listen(3000, function () {

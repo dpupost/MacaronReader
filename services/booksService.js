@@ -1,8 +1,9 @@
 'use strict';
 
-var MongoClient = require('thunkify-mongodb').MongoClient;
-var mongodb = require('mongodb');
-var assert = require('assert');
+const MongoClient = require('thunkify-mongodb').MongoClient;
+const mongodb = require('mongodb');
+const assert = require('assert');
+
 
 class BooksService{
 
@@ -10,10 +11,11 @@ class BooksService{
     }
 
     *getByTitle(title){
-        var mongoClient = new MongoClient(new mongodb.MongoClient());
-        var db = yield mongoClient.connect('mongodb://localhost:27017/MacaronReader');
-        var collection = yield db.collection('books');
-        var book = yield collection.find({title: title}).toArray();
+        assert.notEqual(title, null);
+        let mongoClient = new MongoClient(new mongodb.MongoClient());
+        let db = yield mongoClient.connect('mongodb://localhost:27017/MacaronReader');
+        let collection = yield db.collection('books');
+        let book = yield collection.find({title: title}).toArray();
 
         yield db.close();
 

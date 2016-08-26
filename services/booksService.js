@@ -3,7 +3,7 @@
 const MongoClient = require('thunkify-mongodb').MongoClient;
 const mongodb = require('mongodb');
 const assert = require('assert');
-
+var config = require('../config/config');
 
 class BooksService{
 
@@ -13,7 +13,7 @@ class BooksService{
     *getByTitle(title){
         assert.notEqual(title, null);
         let mongoClient = new MongoClient(new mongodb.MongoClient());
-        let db = yield mongoClient.connect('mongodb://localhost:27017/MacaronReader');
+        let db = yield mongoClient.connect(config.mongoDb.uri);
         let collection = yield db.collection('books');
         let book = yield collection.find({title: title}).toArray();
 

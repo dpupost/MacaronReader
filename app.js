@@ -1,15 +1,20 @@
 'use strict';
 
-var express = require('express');
-var BooksService = require("./services/booksService")
-var app = express();
+const express = require('express');
+const BooksService = require("./services/booksService")
+const co = require('co');
+const app = express();
 
 app.get('/', function (req, res) {
 
-    var booksService = new BooksService();
-    var book = booksService.getByTitle('testTitle');
+    let booksService = new BooksService();
+    let book = co(booksService.getByTitle('testTitle'));
+    book.then(function (value) {
+        res.send('Book title: ' + value[0].title);
+    }, function (err) {
+        console.error(err.stack);
+    });
 
-    res.send('Book title: ' + book.next().value);
 });
 
 app.listen(3000, function () {
